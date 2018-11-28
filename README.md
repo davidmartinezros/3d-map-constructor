@@ -1,10 +1,10 @@
-# The New Web Concept
+# 3d-map-constructor
 
 ## description
 
-A project developer by David Martínez Ros that will be the new web concept.
+A project developer by David Martínez Ros that will load maps with json file format.
 
-A revolutionated evolution of showing web components in 3D environment.
+A revolutionated evolution of showing maps loaded from a json file in 3D environment.
 
 ## requirements
 
@@ -17,4 +17,4 @@ npm install (on the root directory of the project with node.js installed)
 ## running
 
 ng serve (published on http://localhost:4200)
-# 3d-map-constructor
+
