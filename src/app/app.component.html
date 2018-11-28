@@ -1,0 +1,12 @@
+<div class="container">
+    <div class="row">
+        <div class="col-6">    
+            <canvas #canvas (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)" (mousemove)="onMouseMove($event)">
+            </canvas>
+        </div>
+        <div class="col-6">
+            <canvas #canvasHtml>
+            </canvas>
+        </div>
+    </div>
+</div>
