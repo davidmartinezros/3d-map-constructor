@@ -1,5 +1,8 @@
 import { AfterViewInit, OnInit, Component, ElementRef, Input, ViewChild, HostListener } from '@angular/core';
 import { CubeGeometry, Scene, PointLight, PerspectiveCamera, Vector3, BoxBufferGeometry, MeshBasicMaterial, Mesh, WebGLRenderer, PCFSoftShadowMap, Color, DoubleSide, Vector2, Geometry, Face3, Raycaster, ShaderMaterial, LineSegments, Box3, Ray, BoxGeometry, Matrix4, Matrix3, Line3, Line, AmbientLight, DirectionalLight, PlaneGeometry, LineBasicMaterial, CylinderGeometry, Material, MeshPhongMaterial } from 'three';
+import { ReturnsJsonArrayService } from './returns-json-array.service';
+import { Observable } from 'rxjs';
+import { Node } from './node.class';
 
 declare var THREE;
 
@@ -16,7 +19,8 @@ declare var SPE: any;
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css']
+    styleUrls: ['./app.component.css'],
+    providers: [ReturnsJsonArrayService]
 })
 export class AppComponent implements OnInit, AfterViewInit {
 
@@ -37,21 +41,9 @@ export class AppComponent implements OnInit, AfterViewInit {
     @ViewChild('canvas')
     private canvasRef: ElementRef;
 
-    // parameters ocean
-    parameters = {
-        oceanSide: 2000,
-        size: 1.0,
-        distortionScale: 3.7,
-        alpha: 1.0,
-        sizeRain: 2,
-        transparentRain: true,
-        sizeAttenuationRain: true,
-        opacityRain: 0.6,
-        colorRain: 0xffffff
+    cubes: Node[];
 
-    };
-
-    constructor() {
+    constructor(private service: ReturnsJsonArrayService) {
         this.createManagements();
     }
 
@@ -227,19 +219,32 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     private loadMap() {
-      let geometry = new BoxGeometry(10, 10, 10, 1, 1, 1);
-    
-      // Make a material
-      var material = new MeshPhongMaterial({
-        color: 0x555555,
-        specular: 0xffffff,
-        shininess: 50,
-        flatShading: THREE.SmoothShading
-      });
+        // Make a material
+        var material = new MeshPhongMaterial({
+            color: 0x555555,
+            specular: 0xffffff,
+            shininess: 50,
+            flatShading: THREE.SmoothShading
+        });
 
-      let mesh = new Mesh(geometry, material);
-      
-      this.scene.add(mesh);
+        this.service.getCubes('./assets/data/scene.json')
+            .then(
+                cubes => {
+                    this.cubes = cubes;
+                    debugger;
+                    for(let cube of this.cubes) {
+                        let geometry = new BoxGeometry(cube.width, cube.height, cube.depth, 1, 1, 1);
+                        let mesh = new Mesh(geometry, material);
+            
+                        mesh.translateX(cube.translateX);
+                        mesh.translateY(cube.translateY);
+                        mesh.translateZ(cube.translateZ);
+            
+                        this.scene.add(mesh);
+                }
+            });
+
+        
     }
 
     animate(time) {

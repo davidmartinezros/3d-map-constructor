@@ -1,0 +1,20 @@
+[
+    {
+        "id": 0,
+        "width": 10,
+        "height": 10,
+        "depth": 10,
+        "translateX": 0,
+        "translateY": 0,
+        "translateZ": 0
+    },
+    {
+        "id": 1,
+        "width": 10,
+        "height": 10,
+        "depth": 10,
+        "translateX": 15,
+        "translateY": 15,
+        "translateZ": 0
+    }
+]
